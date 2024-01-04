@@ -1,7 +1,7 @@
 {
   "name": "sellix",
-  "version": "2.0.12-dev",
-  "description": "An API Wrapper for Sellix",
+  "version": "1.0.0",
+  "description": "An API Wrapper for Sellix, thanks to github.com/Stefanuk12",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Stefanuk12/Sellix.git"
+    "url": "git+https://github.com/snekROmonoro/Sellix.git"
   },
   "keywords": [
     "sellix",
@@ -18,12 +18,12 @@
     "typescript",
     "javascript"
   ],
-  "author": "Stefanuk12",
+  "author": "snekROmonoro",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Stefanuk12/Sellix/issues"
+    "url": "https://github.com/snekROmonoro/Sellix/issues"
   },
-  "homepage": "https://github.com/Stefanuk12/Sellix#readme",
+  "homepage": "https://github.com/snekROmonoro/Sellix#readme",
   "dependencies": {
     "express": "^4.17.3",
     "got": "^11.8.1"
