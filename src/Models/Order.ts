@@ -23,11 +23,12 @@ export class Order {
     }
 
     // Retrieves an Order by Uniqid.
-    static async getByID(api_key: string, id: string) {
+    static async getByID(api_key: string, id: string, merchant?: string) {
         // Convert
         const response: SellixBase<IOrderGetResponse> = await HttpClient.get(`orders/${id}`, {
             headers: {
-                Authorization: `Bearer ${api_key}`
+                Authorization: `Bearer ${api_key}`,
+                "X-Sellix-Merchant": merchant
             }
         }).json()
         const order = new Order(response.data.order)
@@ -40,23 +41,24 @@ export class Order {
     }
 
     // Merged get
-    static async get(api_key: string, param?: string | number) {
+    static async get(api_key: string, param?: string | number, merchant?: string) {
         if (typeof param == "string")
-            return await Order.getByID(api_key, param)
+            return await Order.getByID(api_key, param, merchant)
         else
-            return await Order.getAll(api_key, param)
+            return await Order.getAll(api_key, param, merchant)
     }
     async get(param: string | number) {
-        return Order.get(this.api_key, param)
+        return Order.get(this.api_key, param, this.merchant)
     }
 
     // Returns a list of all the Order. The order are sorted by creation date, with the most recently created order being first. Product objects and additional info are not shown in the list endpoint.
-    static async getAll(api_key: string, page?: number) {
+    static async getAll(api_key: string, page?: number, merchant?: string) {
         // Get the orders
         const response: SellixBase<IOrderListResponse> = await HttpClient.get("orders", {
             searchParams: { page: page },
             headers: {
-                Authorization: `Bearer ${api_key}`
+                Authorization: `Bearer ${api_key}`,
+                "X-Sellix-Merchant": merchant
             }
         }).json()
 
