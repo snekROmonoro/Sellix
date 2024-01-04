@@ -1,5 +1,5 @@
 {
-  "name": "sellix",
+  "name": "@snekromonoro/sellix",
   "version": "1.0.0",
   "description": "An API Wrapper for Sellix, thanks to github.com/Stefanuk12",
   "main": "lib/index.js",
@@ -30,5 +30,8 @@
   },
   "devDependencies": {
     "@types/express": "^4.17.13"
+  },
+  "directories": {
+    "lib": "lib"
   }
 }
