@@ -1,6 +1,6 @@
 {
   "name": "@snekromonoro/sellix",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "An API Wrapper for Sellix, thanks to github.com/Stefanuk12",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",

@@ -37,6 +37,7 @@ export interface IPaymentCreateResponseData {
 }
 
 export interface IPaymentCreateResponseDataWhiteLabel {
-    uniqid: string
     url: string
+    url_branded: string
+    uniqid: string
 }
