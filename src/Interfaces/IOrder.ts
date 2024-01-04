@@ -20,6 +20,7 @@ import { IProduct } from "./IProduct.js"
 //
 export interface IOrder {
     api_key: string
+    merchant?: string
 
     id: number
     uniqid: string

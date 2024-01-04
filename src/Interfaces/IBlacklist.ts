@@ -5,6 +5,7 @@ import { TType } from "../Types/TType.js"
 // Interfaces
 export interface IBlacklist {
     api_key: string
+    merchant?: string
 
     id: number
     uniqid: string

@@ -5,24 +5,25 @@ import { ICategory, ICategoryCreate, ICategoryCreateResponse, ICategoryEdit, ICa
 import { SellixBase, SellixBaseString } from "../Interfaces/SellixBase.js"
 
 //
-export interface Category extends ICategory {}
+export interface Category extends ICategory { }
 export class Category {
     // Vars
     HttpClient: Got
 
     // Constructor
-    constructor(Data: ICategory){
+    constructor(Data: ICategory) {
         Object.assign(this, Data)
 
         this.HttpClient = HttpClient.extend({
             headers: {
-                Authorization: `Bearer ${this.api_key}`
+                Authorization: `Bearer ${this.api_key}`,
+                "X-Sellix-Merchant": this.merchant
             }
         })
     }
 
     // Retrieves a Category by Uniqid
-    static async getByID(api_key: string, id: string){
+    static async getByID(api_key: string, id: string) {
         // Convert
         const response: SellixBase<ICategoryGetResponse> = await HttpClient.get(`categories/${id}`, {
             headers: {
@@ -34,15 +35,15 @@ export class Category {
         // Return
         return category
     }
-    async getByID(id: string){
+    async getByID(id: string) {
         return await Category.getByID(this.api_key, id)
     }
 
     // Returns a list of all the Categories. The categories are sorted by creation date, with the most recently created categories being first
-    static async getAll(api_key: string, page?: number){
+    static async getAll(api_key: string, page?: number) {
         // Get the categories
         const response: SellixBase<ICategoryListResponse> = await HttpClient.get("categories", {
-            searchParams: {page: page},
+            searchParams: { page: page },
             headers: {
                 Authorization: `Bearer ${api_key}`
             }
@@ -50,30 +51,30 @@ export class Category {
 
         // Convert each object to a category object
         let categories = []
-        for (const _category of response.data.categories){
+        for (const _category of response.data.categories) {
             categories.push(new Category(_category))
         }
 
         //
         return categories
     }
-    async getAll(page?: number){
+    async getAll(page?: number) {
         return await Category.getAll(this.api_key, page)
     }
 
     // Merged get
-    static async get(api_key: string, param?: string | number){
+    static async get(api_key: string, param?: string | number) {
         if (typeof param == "string")
             return await Category.getByID(api_key, param)
         else
             return await Category.getAll(api_key, param)
     }
-    async get(param: string | number){
+    async get(param: string | number) {
         return Category.get(this.api_key, param)
     }
 
     // Creates a Category and returns the Uniqid
-    static async create(api_key: string, Data: ICategoryCreate){
+    static async create(api_key: string, Data: ICategoryCreate) {
         // Send request
         const response: ICategoryCreateResponse = await HttpClient.post("categories", {
             json: Data,
@@ -88,12 +89,12 @@ export class Category {
         // Return
         return category
     }
-    async create(Data: ICategoryCreate){
+    async create(Data: ICategoryCreate) {
         return await Category.create(this.api_key, Data)
     }
 
     // Edits a Category
-    static async edit(api_key: string, id: string, Data: ICategoryEdit){
+    static async edit(api_key: string, id: string, Data: ICategoryEdit) {
         // Send request
         const response: SellixBaseString = await HttpClient.put(`categories/${id}`, {
             json: Data,
@@ -105,12 +106,12 @@ export class Category {
         // Return
         return response
     }
-    async edit(Data: ICategoryEdit){
+    async edit(Data: ICategoryEdit) {
         return await Category.edit(this.api_key, this.uniqid, Data)
     }
 
     // Deletes a Category
-    static async delete(api_key: string, id: string){
+    static async delete(api_key: string, id: string) {
         // Send request
         const response: SellixBaseString = await HttpClient.delete(`categories/${id}`, {
             headers: {
@@ -121,7 +122,7 @@ export class Category {
         // Return
         return response
     }
-    async delete(){
+    async delete() {
         return await Category.delete(this.api_key, this.uniqid)
     }
 }

@@ -5,6 +5,7 @@ import { TTicketStatus } from "../Types/TTicketStatus.js"
 // Interfaces
 export interface ITicket {
     api_key: string
+    merchant?: string
 
     id: number
     uniqid: string

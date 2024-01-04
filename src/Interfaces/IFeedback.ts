@@ -6,6 +6,7 @@ import { IProduct } from "./IProduct.js"
 // Interfaces
 export interface IFeedback {
     api_key: string
+    merchant?: string
 
     id: number
     uniqid: string

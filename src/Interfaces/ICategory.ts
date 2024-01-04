@@ -5,6 +5,7 @@ import { IProduct } from "./IProduct.js"
 // Interfaces
 export interface ICategory {
     api_key: string
+    merchant?: string
 
     id: number
     uniqid: string
@@ -40,4 +41,4 @@ export interface ICategoryCreateResponse {
     data: ICategoryCreateResponseData
 }
 
-export interface ICategoryEdit extends ICategoryCreate {}
+export interface ICategoryEdit extends ICategoryCreate { }

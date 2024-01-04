@@ -10,6 +10,7 @@ import { IInvoice } from "./IInvoice.js"
 // Interfaces
 export interface IPayment {
     api_key: string
+    merchant?: string
 
     title?: string
     product_id?: string

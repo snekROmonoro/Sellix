@@ -10,6 +10,7 @@ import { IUserFeedback } from "./IUserFeedback.js"
 // Interfaces
 export interface IProduct {
     api_key: string
+    merchant?: string
 
     id: number
     uniqid: string

@@ -5,24 +5,25 @@ import { IFeedback, IFeedbackGetResponse, IFeedbackListResponse } from "../Inter
 import { SellixBase, SellixBaseString } from "../Interfaces/SellixBase.js"
 
 //
-export interface Feedback extends IFeedback {}
+export interface Feedback extends IFeedback { }
 export class Feedback {
     // Vars
     HttpClient: Got
 
     // Constructor
-    constructor(Data: IFeedback){
+    constructor(Data: IFeedback) {
         Object.assign(this, Data)
 
         this.HttpClient = HttpClient.extend({
             headers: {
-                Authorization: `Bearer ${this.api_key}`
+                Authorization: `Bearer ${this.api_key}`,
+                "X-Sellix-Merchant": this.merchant
             }
         })
     }
 
     // Retrieves a Feedback by Uniqid.
-    static async getByID(api_key: string, id: string){
+    static async getByID(api_key: string, id: string) {
         // Convert
         const response: SellixBase<IFeedbackGetResponse> = await HttpClient.get(`feedback/${id}`, {
             headers: {
@@ -34,15 +35,15 @@ export class Feedback {
         // Return
         return feedback
     }
-    async getByID(id: string){
+    async getByID(id: string) {
         return await Feedback.getByID(this.api_key, id)
     }
 
     // Returns a list of all the Feedback. The feedback are sorted by creation date, with the most recently created feedback being first. Invoice and Product objects are not shown in the list endpoint
-    static async getAll(api_key: string, page?: number){
+    static async getAll(api_key: string, page?: number) {
         // Get the feedback
         const response: SellixBase<IFeedbackListResponse> = await HttpClient.get("feedback", {
-            searchParams: {page: page},
+            searchParams: { page: page },
             headers: {
                 Authorization: `Bearer ${api_key}`
             }
@@ -50,33 +51,33 @@ export class Feedback {
 
         // Convert each object to a query object
         let feedbacks = []
-        for (const _feedback of response.data.feedback){
+        for (const _feedback of response.data.feedback) {
             feedbacks.push(new Feedback(_feedback))
         }
 
         //
         return feedbacks
     }
-    async getAll(page?: number){
+    async getAll(page?: number) {
         return await Feedback.getAll(this.api_key, page)
     }
 
     // Merged get
-    static async get(api_key: string, param?: string | number){
+    static async get(api_key: string, param?: string | number) {
         if (typeof param == "string")
             return await Feedback.getByID(api_key, param)
         else
             return await Feedback.getAll(api_key, param)
     }
-    async get(param: string | number){
+    async get(param: string | number) {
         return Feedback.get(this.api_key, param)
     }
 
     // Replies to a Feedback
-    static async replyTo(api_key: string, id: string, reply: string){
+    static async replyTo(api_key: string, id: string, reply: string) {
         // Send request
         const response: SellixBaseString = await HttpClient.post(`feedback/${id}`, {
-            json: {reply: reply},
+            json: { reply: reply },
             headers: {
                 Authorization: `Bearer ${api_key}`
             }
@@ -85,7 +86,7 @@ export class Feedback {
         //
         return response
     }
-    async replyTo(reply: string){
+    async replyTo(reply: string) {
         return await Feedback.replyTo(this.api_key, this.uniqid, reply)
     }
 }

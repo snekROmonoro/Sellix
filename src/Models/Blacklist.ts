@@ -16,7 +16,8 @@ export class Blacklist {
 
         this.HttpClient = HttpClient.extend({
             headers: {
-                Authorization: `Bearer ${this.api_key}`
+                Authorization: `Bearer ${this.api_key}`,
+                "X-Sellix-Merchant": this.merchant
             }
         })
     }

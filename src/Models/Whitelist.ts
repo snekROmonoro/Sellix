@@ -5,24 +5,25 @@ import { IWhitelist, IWhitelistCreate, IWhitelistEdit, IWhitelistListResponse } 
 import { SellixBase, SellixBaseString, SellixBaseUniqid } from "../Interfaces/SellixBase.js"
 
 //
-export interface Whitelist extends IWhitelist {}
+export interface Whitelist extends IWhitelist { }
 export class Whitelist {
     // Vars
     HttpClient: Got
 
     // Constructor
-    constructor(Data: IWhitelist){
+    constructor(Data: IWhitelist) {
         Object.assign(this, Data)
 
         this.HttpClient = HttpClient.extend({
             headers: {
-                Authorization: `Bearer ${this.api_key}`
+                Authorization: `Bearer ${this.api_key}`,
+                "X-Sellix-Merchant": this.merchant
             }
         })
     }
 
     // Retrieves a Whitelist by ID
-    static async getByID(api_key: string, id: string){
+    static async getByID(api_key: string, id: string) {
         // Convert
         const response: SellixBase<IWhitelist> = await HttpClient.get(`whitelists/${id}`, {
             headers: {
@@ -34,15 +35,15 @@ export class Whitelist {
         // Return
         return whitelist
     }
-    async getByID(id: string){
+    async getByID(id: string) {
         return await Whitelist.getByID(this.api_key, id)
     }
 
     // Returns a list of the Whitelist. The whitelist are sorted by creation date, with the most recently created whitelist being first
-    static async getAll(api_key: string, page?: number){
+    static async getAll(api_key: string, page?: number) {
         // Get the whitelists
         const response: SellixBase<IWhitelistListResponse> = await HttpClient.get("whitelists", {
-            searchParams: {page: page},
+            searchParams: { page: page },
             headers: {
                 Authorization: `Bearer ${api_key}`
             }
@@ -50,30 +51,30 @@ export class Whitelist {
 
         // Convert each object to a whitelist object
         let whitelists = []
-        for (const _whitelist of response.data.whitelists){
+        for (const _whitelist of response.data.whitelists) {
             whitelists.push(new Whitelist(_whitelist))
         }
 
         //
         return whitelists
     }
-    async getAll(page?: number){
+    async getAll(page?: number) {
         return await Whitelist.getAll(this.api_key, page)
     }
 
     // Merged get
-    static async get(api_key: string, param?: string | number){
+    static async get(api_key: string, param?: string | number) {
         if (typeof param == "string")
             return await Whitelist.getByID(api_key, param)
         else
             return await Whitelist.getAll(api_key, param)
     }
-    async get(param: string | number){
+    async get(param: string | number) {
         return Whitelist.get(this.api_key, param)
     }
 
     // Creates a Whitelist and returns the Uniqid
-    static async create(api_key: string, Data: IWhitelistCreate){
+    static async create(api_key: string, Data: IWhitelistCreate) {
         const response: SellixBaseUniqid = await HttpClient.post("whitelists", {
             json: Data,
             headers: {
@@ -87,12 +88,12 @@ export class Whitelist {
         // Return
         return whitelist
     }
-    async create(Data: IWhitelistCreate){
+    async create(Data: IWhitelistCreate) {
         return await Whitelist.create(this.api_key, Data)
     }
 
     // Edits a Whitelist
-    static async edit(api_key: string, id: string, Data: IWhitelistEdit){
+    static async edit(api_key: string, id: string, Data: IWhitelistEdit) {
         // Send request
         const response: SellixBaseString = await HttpClient.put(`whitelists/${id}`, {
             json: Data,
@@ -104,12 +105,12 @@ export class Whitelist {
         // Return
         return response
     }
-    async edit(Data: IWhitelistEdit){
+    async edit(Data: IWhitelistEdit) {
         return await Whitelist.edit(this.api_key, this.uniqid, Data)
     }
 
     // Deletes a Whitelist
-    static async delete(api_key: string, id: string){
+    static async delete(api_key: string, id: string) {
         // Send request
         const response: SellixBaseString = await HttpClient.delete(`whitelists/${id}`, {
             headers: {
@@ -120,7 +121,7 @@ export class Whitelist {
         // Return
         return response
     }
-    async delete(){
+    async delete() {
         return await Whitelist.delete(this.api_key, this.uniqid)
     }
 }

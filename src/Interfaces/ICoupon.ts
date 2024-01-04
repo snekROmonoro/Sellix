@@ -6,6 +6,7 @@ import { UseType } from "../Types/TUseType.js"
 // Interfaces
 export interface ICoupon {
     api_key: string
+    merchant?: string
 
     id: number
     uniqid: string

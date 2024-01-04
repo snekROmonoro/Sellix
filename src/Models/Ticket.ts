@@ -5,24 +5,25 @@ import { ITicket, ITicketGetResponse, ITicketListResponse } from "../Interfaces/
 import { SellixBase, SellixBaseString } from "../Interfaces/SellixBase.js"
 
 // Class
-export interface Ticket extends ITicket {}
+export interface Ticket extends ITicket { }
 export class Ticket {
     // Vars
     HttpClient: Got
 
     // Constructor
-    constructor(Data: ITicket){
+    constructor(Data: ITicket) {
         Object.assign(this, Data)
 
         this.HttpClient = HttpClient.extend({
             headers: {
-                Authorization: `Bearer ${this.api_key}`
+                Authorization: `Bearer ${this.api_key}`,
+                "X-Sellix-Merchant": this.merchant
             }
         })
     }
 
     // Retrieves a Ticket by Uniqid.
-    static async getByID(api_key: string, id: string){
+    static async getByID(api_key: string, id: string) {
         // Convert
         const response: SellixBase<ITicketGetResponse> = await HttpClient.get(`queries/${id}`, {
             headers: {
@@ -34,15 +35,15 @@ export class Ticket {
         // Return
         return ticket
     }
-    async getByID(id: string){
+    async getByID(id: string) {
         return await Ticket.getByID(this.api_key, id)
     }
 
     // Returns a list of all the Queries. The queries are sorted by creation date, with the most recently created queries being first. The ticket object does not contain all the info
-    static async getAll(api_key: string, page?: number){
+    static async getAll(api_key: string, page?: number) {
         // Get the queries
         const response: SellixBase<ITicketListResponse> = await HttpClient.get("queries", {
-            searchParams: {page: page},
+            searchParams: { page: page },
             headers: {
                 Authorization: `Bearer ${api_key}`
             }
@@ -50,33 +51,33 @@ export class Ticket {
 
         // Convert each object to a ticket object
         let queries = []
-        for (const _ticket of response.data.queries){
+        for (const _ticket of response.data.queries) {
             queries.push(new Ticket(_ticket))
         }
 
         //
         return queries
     }
-    async getAll(page?: number){
+    async getAll(page?: number) {
         return await Ticket.getAll(this.api_key, page)
     }
 
     // Merged get
-    static async get(api_key: string, param?: string | number){
+    static async get(api_key: string, param?: string | number) {
         if (typeof param == "string")
             return await Ticket.getByID(api_key, param)
         else
             return await Ticket.getAll(api_key, param)
     }
-    async get(param: string | number){
+    async get(param: string | number) {
         return Ticket.get(this.api_key, param)
     }
 
     // Replies to a Ticket
-    static async reply(api_key: string, id: string, reply: string){
+    static async reply(api_key: string, id: string, reply: string) {
         // Send request
         const response: SellixBaseString = await HttpClient.post(`queries/reply/${id}`, {
-            json: {reply: reply},
+            json: { reply: reply },
             headers: {
                 Authorization: `Bearer ${api_key}`
             }
@@ -85,12 +86,12 @@ export class Ticket {
         // Return
         return response
     }
-    async reply(reply: string){
+    async reply(reply: string) {
         return await Ticket.reply(this.api_key, this.uniqid, reply)
     }
 
     // Closes to a Ticket
-    static async close(api_key: string, id: string){
+    static async close(api_key: string, id: string) {
         // Send request
         const response: SellixBaseString = await HttpClient.post(`queries/close/${id}`, {
             headers: {
@@ -101,12 +102,12 @@ export class Ticket {
         // Return
         return response
     }
-    async close(){
+    async close() {
         return await Ticket.close(this.api_key, this.uniqid)
     }
 
     // Reopen to a Ticket
-    static async reopen(api_key: string, id: string){
+    static async reopen(api_key: string, id: string) {
         // Send request
         const response: SellixBaseString = await HttpClient.post(`queries/reopen/${id}`, {
             headers: {
@@ -117,7 +118,7 @@ export class Ticket {
         // Return
         return response
     }
-    async reopen(){
+    async reopen() {
         return await Ticket.reopen(this.api_key, this.uniqid)
     }
 }
