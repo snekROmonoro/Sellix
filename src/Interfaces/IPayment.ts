@@ -4,7 +4,7 @@
 import { TCurrency } from "../Types/TCurrency.js"
 import { TGateway } from "../Types/TGateway.js"
 import { TPayPalAPM } from "../Types/TPayPalAPM.js"
-import { ICustomField } from "./ICustomField.js"
+import { ICustomField, ICustomFieldObj } from "./ICustomField.js"
 import { IInvoice } from "./IInvoice.js"
 
 // Interfaces
@@ -25,7 +25,7 @@ export interface IPayment {
     coupon_code?: string
     confirmations?: number
     email: string
-    custom_fields?: ICustomField[]
+    custom_fields?: ICustomField[] | ICustomFieldObj
     fraud_shield?: Object
     webhook?: string
     white_label?: boolean
