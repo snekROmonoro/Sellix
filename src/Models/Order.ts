@@ -1,8 +1,8 @@
 // Dependencies
 import { Got } from "got"
-import { HttpClient } from "../index.js"
 import { IOrder, IOrderGetResponse, IOrderListResponse } from "../Interfaces/IOrder.js"
 import { SellixBase } from "../Interfaces/SellixBase.js"
+import { HttpClient } from "../index.js"
 
 //
 export interface Order extends IOrder { }
@@ -31,6 +31,10 @@ export class Order {
                 "X-Sellix-Merchant": merchant
             }
         }).json()
+
+        if (response.error) {
+            throw new Error(response.error)
+        }
 
         const order = new Order(response.data.order)
 
@@ -62,6 +66,10 @@ export class Order {
                 "X-Sellix-Merchant": merchant
             }
         }).json()
+
+        if (response.error) {
+            throw new Error(response.error)
+        }
 
         // Convert each object to a order object
         let orders = []
