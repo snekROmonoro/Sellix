@@ -31,6 +31,7 @@ export class Order {
                 "X-Sellix-Merchant": merchant
             }
         }).json()
+
         const order = new Order(response.data.order)
 
         //

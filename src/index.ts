@@ -22,6 +22,41 @@ export const HttpClient = got.extend({
     prefixUrl: "https://dev.sellix.io/v1/",
     headers: {
         "User-Agent": "sellix-tsjs"
+    },
+    retry: {
+        limit: 2,
+        methods: [
+            'GET',
+            'PUT',
+            'HEAD',
+            'DELETE',
+            'OPTIONS',
+            'TRACE'
+        ],
+        statusCodes: [
+            408,
+            413,
+            429,
+            500,
+            502,
+            503,
+            504,
+            521,
+            522,
+            524
+        ],
+        errorCodes: [
+            'ETIMEDOUT',
+            'ECONNRESET',
+            'EADDRINUSE',
+            'ECONNREFUSED',
+            'EPIPE',
+            'ENOTFOUND',
+            'ENETUNREACH',
+            'EAI_AGAIN'
+        ],
+        calculateDelay: ({ computedValue }) => computedValue,
+        maxRetryAfter: undefined
     }
 })
 
@@ -29,15 +64,15 @@ export const HttpClient = got.extend({
 export interface ISellix {
     WebhookSecret: string
 }
-export interface Sellix extends ISellix {}
+export interface Sellix extends ISellix { }
 export class Sellix {
     // Constructor
-    constructor(Data: ISellix){
+    constructor(Data: ISellix) {
         Object.assign(this, Data)
     }
 
     // Verify is a webhook is legit
-    verifyWebhook(GivenSignature: string, Payload: Object){
+    verifyWebhook(GivenSignature: string, Payload: Object) {
         // Generate Hmac
         const PayloadString = JSON.stringify(Payload)
         const Signature = crypto.createHmac('sha512', this.WebhookSecret).update(PayloadString, "utf-8").digest('hex')
@@ -58,15 +93,15 @@ export class Sellix {
     verifyWebhookExpress = (Request: Request, Response: Response, Next: NextFunction) => {
         // Get the signature
         let GivenSignature = Request.headers["x-sellix-unescaped-signature"]
-        if (!GivenSignature){
+        if (!GivenSignature) {
             return Response.sendStatus(401)
         }
 
         // Make sure it matches
-        if (!this.verifyWebhook(GivenSignature.toString(), Request.body)){
+        if (!this.verifyWebhook(GivenSignature.toString(), Request.body)) {
             return Response.sendStatus(401)
         }
-    
+
         //
         Next()
     }
