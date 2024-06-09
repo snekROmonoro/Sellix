@@ -35,12 +35,13 @@ export class Payment {
     }
 
     // Deletes a Payment
-    static async delete(api_key: string, id: string) {
+    static async delete(api_key: string, id: string, merchant?: string) {
         // Send request
         const response: SellixBaseString = await HttpClient.delete(`payments/${id}`, {
             json: this,
             headers: {
-                Authorization: `Bearer ${api_key}`
+                Authorization: `Bearer ${api_key}`,
+                "X-Sellix-Merchant": merchant
             }
         }).json()
 
